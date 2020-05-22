@@ -1,4 +1,4 @@
-import { css, html, LitElement } from "lit-element";
+import { css, html, LitElement } from 'lit-element';
 
 export class DropDown extends LitElement {
 
@@ -19,33 +19,27 @@ export class DropDown extends LitElement {
             font-family: 'Poppins';
             font-size: 16px;
             color: var(--text-color);
-        }
-        .dd-container {
             min-width: 240px;
             display: flex;
             flex-direction: column;
             background-color: transparent;
             user-select: none;
-            margin: 20px 40px;
         }
 
-        .dd-label {
+        .label {
             font-size: 12px;
             color: var(--primary-color);
         }
 
-        .dd-head {
+        .head {
             border-bottom: 1px solid var(--primary-color);
             display: flex;
             justify-content: space-between;
-        }
-
-        .dd-head {
             min-height: 24px;
             padding: 8px;
         }
 
-        .dd-choice {
+        .choice {
             display: flex;
             justify-content: flex-start;            
             align-items: center;
@@ -55,7 +49,7 @@ export class DropDown extends LitElement {
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .dd-toggle {
+        .toggle {
             width: 24px;
             height: 24px;
             background-color: var(--primary-color);
@@ -63,24 +57,24 @@ export class DropDown extends LitElement {
             -webkit-mask-repeat: no-repeat;            
             transition: transform .3s linear;            
         }
-        .dd-toggle.open {
+        .toggle.open {
             transform: rotate(180deg);
         }
 
-        .dd-body {
-            max-height: 0px;
+        .body {
+            max-height: 0;
             opacity: 0;
             overflow-y: scroll;
             overflow-x: hidden;
             box-shadow: 2px 2px 2px 2px rgba(0,0,0,.6);
             transition: max-height .3s linear, opacity .3s linear;
         }
-        .dd-body.open {
-            max-height: 13vw;
+        .body.open {
+            max-height: 80px;
             opacity: 1;
         }
-        .dd-body.closed {
-            max-height: 0px;
+        .body.closed {
+            max-height: 0;
             opacity: 0;
         }
 
@@ -88,17 +82,17 @@ export class DropDown extends LitElement {
             margin:0;
         }
 
-        .dd-option {
+        .option {
             color: var(--text-color);
             position: relative;
             padding-left: 8px;
             display: flex;
             align-items: center;
             transition: padding .5s linear, background-color .25s linear, color .25s linear;
-            opacity: 1 !important;
+            opacity: 1;
         }
 
-        .dd-option::after {
+        .option::after {
             content: '';
             width: 100%;
             height: 1px;
@@ -108,7 +102,7 @@ export class DropDown extends LitElement {
             left: 0;
         }
 
-        .dd-option:hover {
+        .option:hover {
             background-color: var(--primary-color);
             color: #fff;
             padding-left: 16px;
@@ -118,21 +112,21 @@ export class DropDown extends LitElement {
 
     constructor() {
         super();
-        this.title = 'Chose your language';
-        this.selected = '---None---';   
+        this.title = 'Choose your language';
+        this.value = '---None---';   
         this.options = ['German', 'English', 'France']; 
         this.closed = true;    
     }
 
-    toggleMenu(event) {
+    toggleMenu() {
         this.closed = !this.closed;
     }
 
     handleMenuOption(event, option) {
-        this.selected = option;
+        this.value = option;
         const customEvent = new CustomEvent('selectionChanged', {
             detail: {
-                option: this.selected
+                option: this.value
             }
         });
         this.dispatchEvent(customEvent);
@@ -141,15 +135,13 @@ export class DropDown extends LitElement {
 
     render() {
         return html`
-            <div class="dd-container">
-                <div class="dd-label">${this.title}</div>
-                <div class="dd-head" @click="${this.toggleMenu}">
-                    <div class="dd-choice">${this.selected}</div>
-                    <div class="dd-toggle ${this.closed ? 'open' : 'closed'}"></div>
-                </div>
-                <div class="dd-body ${this.closed ? 'open' : 'closed'}">
-                    ${this.options.map(option => html`<div class="dd-option" @click="${(e) => this.handleMenuOption(e, option)}">${option}</div>`)}
-                </div>
+            <div class='label'>${this.title}</div>
+            <div class='head' @click='${this.toggleMenu}'>
+                <div class='choice'>${this.value}</div>
+                <div class='toggle ${this.closed ? 'closed' : 'open'}'></div>
+            </div>
+            <div class='body ${this.closed ? 'closed' : 'open'}'>
+                ${this.options.map(option => html`<div class='option' @click='${(e) => this.handleMenuOption(e, option)}'>${option}</div>`)}
             </div>
         `;
     }

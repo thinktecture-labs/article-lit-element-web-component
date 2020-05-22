@@ -5,25 +5,35 @@
     <title>Lit Element Demo</title>
     <script type="module" src="dropdown.js"></script>
     <style>
-        body {
-            display: flex;
-            height: 100vh;
+        body, html {
+            height: 100%;
             width: 100%;
+        }
+        body {
+            font-family: 'Poppins';
+            font-size: 16px;
+            display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
         }
     </style>
 </head>
 <body>
     <lit-element-drop-down 
-        title="Wähle deine Sprache" 
-        selected="German" 
+        title="Chose your language" 
+        value="German" 
         closed="true" 
         options='["German","English","France","Espanol"]'>
     </lit-element-drop-down>
+    <p></p>
     <script>
         const dropDown = document.querySelector('lit-element-drop-down');
-        dropDown.addEventListener('selectionChanged', (e) => {console.log(e.detail.option)});
+        dropDown.addEventListener('selectionChanged', (e) => {
+          console.log(e.detail.option);
+          const p = document.querySelector('p');
+          p.innerHTML = `You have selcted ${e.detail.option}`;
+        });
     </script>
 </body>
 </html>
